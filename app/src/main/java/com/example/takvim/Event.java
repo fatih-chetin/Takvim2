@@ -11,6 +11,10 @@ public class Event {
         this.time_interval = time_interval;
     }
 
+    public Event() {
+
+    }
+
     public String getEvent_name() {
         return event_name;
     }

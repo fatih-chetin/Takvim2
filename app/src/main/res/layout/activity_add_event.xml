@@ -17,25 +17,18 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/editTextDate2"
+        android:id="@+id/etTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
         android:ems="10"
-        android:hint="Date:"
-        android:inputType="date" />
-
-    <EditText
-        android:id="@+id/editTextTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:hint="Time Interval:"
-        android:inputType="time" />
+        android:hint="Time interval:"
+        android:inputType="textPersonName" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnAddEvent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button" />

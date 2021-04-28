@@ -1,15 +1,20 @@
 package com.example.takvim;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -21,16 +26,23 @@ public class MainActivity extends AppCompatActivity implements EventAdapter.Item
     ArrayList<Event> events;
     ArrayList<Event> DailyEvents;
     ImageView btnAdd;
+    CardView cardView;
+
+    int AddEvent=1;
+    String Date;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         DailyEvents=new ArrayList<Event>();
 
         calendarView=findViewById(R.id.calendarView);
         recyclerView=findViewById(R.id.recyc);
+        cardView=findViewById(R.id.cv);
 
         layoutManager= new GridLayoutManager(this,1, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
@@ -71,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements EventAdapter.Item
                     }
 
                     myAdapter.notifyDataSetChanged();
+                    Date=date;
 
                 }
 
@@ -80,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements EventAdapter.Item
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i=new Intent(MainActivity.this,AddEvent.class);
+                startActivityForResult(i,AddEvent);
 
             }
         });
@@ -89,7 +104,53 @@ public class MainActivity extends AppCompatActivity implements EventAdapter.Item
     }
 
     @Override
-    public void onItemClicked(int index) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getOrder()){
+            case 0:
+                DailyEvents.remove(item.getGroupId());
+                myAdapter.notifyItemRemoved(item.getGroupId());
+                myAdapter.notifyItemRangeChanged(item.getGroupId(),DailyEvents.size());
+                return true;
+            case 1:
+                Toast.makeText(this,"aS",Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+
+        }
+
 
     }
-}
+
+    @Override
+    public void onItemClicked(int index) {
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==AddEvent){
+            if(resultCode==RESULT_OK){
+                Event newEvent = new Event();
+                newEvent.setEvent_name(data.getStringExtra("EventName"));
+                newEvent.setDate(Date);
+                newEvent.setTime_interval(data.getStringExtra("Time"));
+                events.add(newEvent);
+
+                for(int a=0;a<events.size();a++){
+
+                    if(Date.equals(events.get(a).getDate())){
+                        DailyEvents.add(events.get(a));
+                    }
+
+
+            }
+                myAdapter.notifyDataSetChanged();
+
+
+        }
+    }
+} }

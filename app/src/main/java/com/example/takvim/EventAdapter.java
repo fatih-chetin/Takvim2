@@ -1,6 +1,8 @@
 package com.example.takvim;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +31,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         ImageView imageView;
         TextView tvEvent;
         TextView tvTime;
@@ -40,24 +42,31 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             tvEvent=itemView.findViewById(R.id.tvEvent);
             tvTime=itemView.findViewById(R.id.tvTime);
             imageView=itemView.findViewById(R.id.imageView);
+            itemView.setOnCreateContextMenuListener(this);
 
-            itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activity.onItemClicked(events.indexOf((Event) v.getTag()));
-
-                }
-            });
         }
+
+
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+            menu.setHeaderTitle("Select The Action");
+            menu.add(this.getAdapterPosition(), v.getId(), 0, "Delete");//groupId, itemId, order, title
+            menu.add(this.getAdapterPosition(), v.getId(), 1, "Edit");
+
+        }
+
     }
+
+
 
     @NonNull
     @Override
     public EventAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout,parent,false);
         return new ViewHolder(v);
+
     }
 
     @Override
