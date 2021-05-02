@@ -23,6 +23,15 @@ public class AddEvent extends AppCompatActivity {
         etName=findViewById(R.id.etName);
         etTime=findViewById(R.id.etTime);
 
+
+
+        if(getIntent().getExtras().getString("CallingReason").equals("Edit")){
+            etName.setText(getIntent().getExtras().getString("EventName"));
+            etTime.setText(getIntent().getExtras().getString("Time"));
+        }
+
+
+
         btnAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity implements EventAdapter.Item
     CardView cardView;
 
     int AddEvent=1;
+    int EditEvent=2;
     String Date;
+    Event pickedEvent;
 
 
     @Override
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements EventAdapter.Item
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(MainActivity.this,AddEvent.class);
+                i.putExtra("CallingReason","Add");
                 startActivityForResult(i,AddEvent);
 
             }
@@ -108,12 +111,25 @@ public class MainActivity extends AppCompatActivity implements EventAdapter.Item
 
         switch (item.getOrder()){
             case 0:
+
+                for(int i=0;i<events.size();i++){
+                    if(events.get(i).equals(DailyEvents.get(item.getGroupId()))){
+                        events.remove(i);
+                    }
+                }
                 DailyEvents.remove(item.getGroupId());
                 myAdapter.notifyItemRemoved(item.getGroupId());
                 myAdapter.notifyItemRangeChanged(item.getGroupId(),DailyEvents.size());
                 return true;
             case 1:
-                Toast.makeText(this,"aS",Toast.LENGTH_SHORT).show();
+                String EventName=DailyEvents.get(item.getGroupId()).getEvent_name();
+                String Time=DailyEvents.get(item.getGroupId()).getTime_interval();
+                Intent i=new Intent(MainActivity.this,AddEvent.class);
+                i.putExtra("CallingReason","Edit");
+                i.putExtra("EventName",EventName);
+                i.putExtra("Time",Time);
+                startActivityForResult(i,EditEvent);
+                pickedEvent=DailyEvents.get(item.getGroupId());
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -139,18 +155,19 @@ public class MainActivity extends AppCompatActivity implements EventAdapter.Item
                 newEvent.setDate(Date);
                 newEvent.setTime_interval(data.getStringExtra("Time"));
                 events.add(newEvent);
-
-                for(int a=0;a<events.size();a++){
-
-                    if(Date.equals(events.get(a).getDate())){
-                        DailyEvents.add(events.get(a));
-                    }
+                DailyEvents.add(newEvent);
 
 
-            }
                 myAdapter.notifyDataSetChanged();
 
 
         }
     }
+        if(requestCode==EditEvent){
+            if(resultCode==RESULT_OK){
+                pickedEvent.setEvent_name(data.getStringExtra("EventName"));
+                pickedEvent.setTime_interval(data.getStringExtra("Time"));
+                myAdapter.notifyDataSetChanged();
+            }
+        }
 } }
