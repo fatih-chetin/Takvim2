@@ -3,12 +3,14 @@ package com.example.takvim;
 public class Event {
     String event_name;
     String date;
-    String time_interval;
+    String timeStart,timeEnd;
 
-    public Event(String event_name, String date, String time_interval) {
+
+    public Event(String event_name, String date, String timeStart, String timeEnd) {
         this.event_name = event_name;
         this.date = date;
-        this.time_interval = time_interval;
+        this.timeStart = timeStart;
+        this.timeEnd=timeEnd;
     }
 
     public Event() {
@@ -31,11 +33,20 @@ public class Event {
         this.date = date;
     }
 
-    public String getTime_interval() {
-        return time_interval;
+    public String getTimeStart() {
+        return timeStart;
     }
 
-    public void setTime_interval(String time_interval) {
-        this.time_interval = time_interval;
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
     }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
 }

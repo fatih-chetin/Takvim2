@@ -73,7 +73,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull EventAdapter.ViewHolder holder, int position) {
         holder.itemView.setTag(events.get(position));
         holder.tvEvent.setText(events.get(position).getEvent_name());
-        holder.tvTime.setText(events.get(position).getTime_interval());
+        holder.tvTime.setText(events.get(position).getTimeStart()+"-"+events.get(position).getTimeEnd());
+
 
 
     }
